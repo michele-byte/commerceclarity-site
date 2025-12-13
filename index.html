@@ -1,1094 +1,695 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>CommerceClarity – AI-Powered Catalog Intelligence</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta
-    name="description"
-    content="CommerceClarity transforms messy supplier data into structured, revenue-ready product catalogs across every channel."
-  />
-  <style>
-    :root {
-      /* Light theme palette */
-      --bg: #f3f4f6;
-      --bg-alt: #ffffff;
-      --accent: #4f46e5;
-      --accent-soft: rgba(79, 70, 229, 0.08);
-      --accent-strong: #4338ca;
-      --text: #111827;
-      --muted: #6b7280;
-      --border-subtle: #e5e7eb;
-      --chip-bg: #f9fafb;
-      --card-bg: #ffffff;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
-      --shadow-strong: 0 22px 55px rgba(15, 23, 42, 0.18);
-      --radius-lg: 18px;
-      --radius-full: 999px;
-      --max-width: 1120px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Helvetica Neue", Arial, sans-serif;
-      background:
-        radial-gradient(circle at top left, #e5e7eb 0, #eef2ff 30%, #f9fafb 65%, #ffffff 100%);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    main {
-      min-height: 100vh;
-    }
-
-    .page {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 24px 20px 80px;
-    }
-
-    /* ---------------- Header ---------------- */
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    .logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 14px;
-      background: conic-gradient(
-        from 180deg,
-        #4f46e5,
-        #22c55e,
-        #06b6d4,
-        #f97316,
-        #4f46e5
-      );
-      position: relative;
-      box-shadow:
-        0 12px 26px rgba(79, 70, 229, 0.4),
-        0 0 0 2px rgba(255, 255, 255, 0.85);
-    }
-
-    .logo-mark::after {
-      content: "";
-      position: absolute;
-      inset: 4px;
-      border-radius: 11px;
-      background: linear-gradient(145deg, #ffffff, #e5e7eb);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.9),
-        inset 0 -2px 4px rgba(148, 163, 184, 0.45);
-    }
-
-    .logo-text-main {
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      font-size: 1.08rem;
-    }
-
-    .logo-text-sub {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    nav a {
-      padding: 6px 10px;
-      border-radius: 999px;
-      transition: all 0.16s ease-out;
-    }
-
-    nav a:hover {
-      background: rgba(239, 246, 255, 0.9);
-      color: #111827;
-      box-shadow: 0 8px 20px rgba(148, 163, 184, 0.35);
-      transform: translateY(-1px);
-    }
-
-    /* ---------------- Hero ---------------- */
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: var(--radius-full);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: linear-gradient(120deg, #ffffff, #eef2ff);
-      padding: 5px 14px 5px 6px;
-      color: var(--muted);
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      margin-bottom: 18px;
-      box-shadow: 0 12px 30px rgba(148, 163, 184, 0.35);
-    }
-
-    .pill-dot {
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #22c55e, #16a34a);
-      position: relative;
-      box-shadow:
-        0 0 0 2px #ffffff,
-        0 0 18px rgba(34, 197, 94, 0.55);
-    }
-
-    .pill-dot::after {
-      content: "";
-      position: absolute;
-      inset: 5px;
-      border-radius: inherit;
-      background: linear-gradient(145deg, #f9fafb, #d1fae5);
-      box-shadow:
-        inset 0 1px 1px rgba(255, 255, 255, 0.9),
-        inset 0 -2px 3px rgba(22, 163, 74, 0.5);
-    }
-
-    .pill-text-strong {
-      color: #111827;
-      font-weight: 600;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-      gap: 32px;
-      align-items: center;
-      margin-bottom: 56px;
-    }
-
-    .hero-heading {
-      font-size: clamp(2.2rem, 4vw, 3rem);
-      font-weight: 750;
-      letter-spacing: 0.01em;
-      line-height: 1.12;
-      margin-bottom: 12px;
-    }
-
-    .hero-gradient {
-      background: linear-gradient(120deg, #111827, #4338ca, #0ea5e9);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero-subtitle {
-      font-size: 0.98rem;
-      color: var(--muted);
-      max-width: 32rem;
-      margin-bottom: 18px;
-    }
-
-    .hero-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      margin-bottom: 20px;
-      font-size: 0.86rem;
-    }
-
-    .hero-metric-item {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      color: var(--muted);
-      padding: 8px 12px;
-      border-radius: 14px;
-      background: linear-gradient(145deg, #ffffff, #e5e7eb);
-      box-shadow:
-        0 10px 24px rgba(148, 163, 184, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    .hero-metric-value {
-      font-size: 1.15rem;
-      font-weight: 650;
-      color: #111827;
-    }
-
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .btn-primary,
-    .btn-ghost {
-      border-radius: var(--radius-full);
-      padding: 10px 18px;
-      border: 1px solid transparent;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.16s ease-out;
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #4f46e5, #6366f1);
-      color: white;
-      box-shadow: var(--shadow-strong);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px) translateZ(0);
-      box-shadow: 0 24px 60px rgba(79, 70, 229, 0.55);
-    }
-
-    .btn-ghost {
-      background: #ffffff;
-      border-color: rgba(148, 163, 184, 0.7);
-      color: #111827;
-      box-shadow:
-        0 10px 28px rgba(148, 163, 184, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    .btn-ghost:hover {
-      transform: translateY(-2px);
-      background: #f9fafb;
-    }
-
-    .hero-caption {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .hero-caption span {
-      color: var(--accent-strong);
-      font-weight: 500;
-    }
-
-    /* 3D right panel */
-
-    .hero-panel {
-      border-radius: var(--radius-lg);
-      background: linear-gradient(145deg, #ffffff, #e5e7eb);
-      border: 1px solid rgba(209, 213, 219, 0.9);
-      padding: 18px 18px 18px;
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-      transform: translateZ(0);
-    }
-
-    .hero-panel::before {
-      content: "";
-      position: absolute;
-      inset: -40px;
-      background:
-        radial-gradient(circle at top right, rgba(129, 140, 248, 0.22), transparent 60%);
-      pointer-events: none;
-    }
-
-    .hero-panel-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 0.82rem;
-      color: var(--muted);
-      position: relative;
-      z-index: 1;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      background: rgba(22, 163, 74, 0.08);
-      color: #15803d;
-      font-size: 0.72rem;
-      border: 1px solid rgba(74, 222, 128, 0.55);
-      box-shadow:
-        0 10px 24px rgba(34, 197, 94, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    }
-
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 12px rgba(74, 222, 128, 0.8);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
-      gap: 10px;
-      margin-top: 6px;
-      font-size: 0.8rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-card {
-      background: linear-gradient(145deg, #ffffff, #e5e7eb);
-      border-radius: 14px;
-      padding: 12px;
-      border: 1px solid rgba(209, 213, 219, 0.9);
-      box-shadow:
-        0 12px 26px rgba(148, 163, 184, 0.55),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    .hero-card-title {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .hero-card-main {
-      font-size: 0.9rem;
-      font-weight: 550;
-      margin-bottom: 6px;
-      color: #111827;
-    }
-
-    .hero-list {
-      list-style: none;
-      display: grid;
-      gap: 4px;
-    }
-
-    .hero-list li {
-      display: flex;
-      justify-content: space-between;
-      gap: 6px;
-      color: var(--muted);
-      font-size: 0.76rem;
-    }
-
-    .hero-list-label {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .hero-badge-pill {
-      border-radius: 999px;
-      padding: 2px 8px;
-      background: rgba(59, 130, 246, 0.08);
-      color: #1d4ed8;
-      font-size: 0.72rem;
-      border: 1px solid rgba(129, 140, 248, 0.7);
-    }
-
-    .hero-highlight {
-      border-radius: 12px;
-      padding: 10px 12px;
-      background: linear-gradient(135deg, #eef2ff, #e0f2fe);
-      border: 1px dashed rgba(129, 140, 248, 0.8);
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 10px;
-      position: relative;
-      z-index: 1;
-      box-shadow: 0 12px 32px rgba(148, 163, 184, 0.5);
-    }
-
-    .hero-highlight strong {
-      color: #111827;
-    }
-
-    /* ---------------- Sections ---------------- */
-
-    section {
-      margin-bottom: 56px;
-    }
-
-    .section-heading-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .section-title {
-      font-size: 1.08rem;
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      color: var(--muted);
-    }
-
-    .section-subtitle {
-      font-size: 0.9rem;
-      color: var(--muted);
-      max-width: 25rem;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      border: 1px solid var(--border-subtle);
-      box-shadow:
-        0 14px 34px rgba(148, 163, 184, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      font-size: 0.86rem;
-      transform: translateZ(0);
-      transition: transform 0.16s ease-out, box-shadow 0.16s ease-out;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 22px 48px rgba(148, 163, 184, 0.65);
-    }
-
-    .card-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .card-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #111827;
-    }
-
-    .card-text {
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 2px;
-    }
-
-    .chip {
-      padding: 4px 9px;
-      border-radius: var(--radius-full);
-      border: 1px solid var(--border-subtle);
-      background: var(--chip-bg);
-      font-size: 0.72rem;
-      color: #111827;
-      white-space: nowrap;
-      box-shadow: 0 9px 20px rgba(148, 163, 184, 0.4);
-    }
-
-    /* ---------------- How it works ---------------- */
-
-    .flow {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      font-size: 0.84rem;
-    }
-
-    .flow-step {
-      background: linear-gradient(145deg, #ffffff, #e5e7eb);
-      border-radius: 16px;
-      padding: 12px;
-      border: 1px solid var(--border-subtle);
-      position: relative;
-      overflow: hidden;
-      box-shadow:
-        0 16px 40px rgba(148, 163, 184, 0.55),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      transform: translateZ(0);
-      transition: transform 0.16s ease-out, box-shadow 0.16s ease-out;
-    }
-
-    .flow-step::before {
-      content: attr(data-step);
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      font-size: 2.3rem;
-      font-weight: 800;
-      color: rgba(209, 213, 219, 0.8);
-    }
-
-    .flow-step:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 24px 52px rgba(148, 163, 184, 0.75);
-    }
-
-    .flow-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #111827;
-      position: relative;
-    }
-
-    .flow-text {
-      color: var(--muted);
-      position: relative;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-      position: relative;
-    }
-
-    .pill-small {
-      border-radius: var(--radius-full);
-      padding: 2px 8px;
-      border: 1px solid var(--border-subtle);
-      font-size: 0.72rem;
-      color: var(--muted);
-      background: #f9fafb;
-    }
-
-    /* ---------------- Industries ---------------- */
-
-    .industries-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
-      font-size: 0.78rem;
-    }
-
-    .industry-tag {
-      border-radius: var(--radius-full);
-      border: 1px solid var(--border-subtle);
-      padding: 6px 10px;
-      background: #ffffff;
-      color: #111827;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      box-shadow: 0 10px 26px rgba(148, 163, 184, 0.45);
-    }
-
-    .industry-tag span:last-child {
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-
-    /* ---------------- Testimonials ---------------- */
-
-    .testimonials {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      font-size: 0.82rem;
-    }
-
-    .quote {
-      background: linear-gradient(145deg, #ffffff, #e5e7eb);
-      border-radius: 14px;
-      padding: 12px;
-      border: 1px solid var(--border-subtle);
-      color: var(--muted);
-      position: relative;
-      overflow: hidden;
-      box-shadow:
-        0 16px 40px rgba(148, 163, 184, 0.55),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    .quote::before {
-      content: "“";
-      position: absolute;
-      top: -25px;
-      left: 0;
-      font-size: 5rem;
-      color: rgba(209, 213, 219, 0.9);
-      pointer-events: none;
-    }
-
-    .quote strong {
-      display: block;
-      margin-top: 6px;
-      color: #111827;
-      font-size: 0.78rem;
-    }
-
-    .quote span {
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-
-    /* ---------------- CTA & Footer ---------------- */
-
-    .cta {
-      border-radius: 20px;
-      padding: 16px;
-      border: 1px solid var(--border-subtle);
-      background: linear-gradient(135deg, #eef2ff, #e0f2fe);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      box-shadow: var(--shadow-strong);
-    }
-
-    .cta-title {
-      font-size: 1.02rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #111827;
-    }
-
-    .cta-text {
-      font-size: 0.88rem;
-      color: var(--muted);
-      max-width: 26rem;
-    }
-
-    footer {
-      margin-top: 40px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 0.78rem;
-      color: var(--muted);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    footer a {
-      color: var(--accent-strong);
-    }
-
-    /* ---------------- Responsive ---------------- */
-
-    @media (max-width: 900px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav {
-        width: 100%;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-      }
-
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .hero-panel {
-        order: -1;
-      }
-
-      .grid-3,
-      .flow,
-      .testimonials {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .industries-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .cta {
-        align-items: flex-start;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .industries-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .hero-heading {
-        font-size: 2rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommerceClarity AI CatalogOS | Google Cloud Solution</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4285F4; /* Google Blue */
+            --secondary: #34A853; /* Google Green */
+            --accent: #EA4335; /* Google Red */
+            --dark: #000000;
+            --light: #FFFFFF;
+            --gray: #F8F9FA;
+            --dark-gray: #3C4043;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--dark-gray);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .google-cloud-badge {
+            background-color: var(--dark-gray);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            background-color: #3367D6;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero h1 span {
+            color: var(--primary);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #ccc;
+        }
+        
+        .highlight {
+            background-color: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Challenge & Solution */
+        .challenge-solution {
+            background-color: var(--dark);
+        }
+        
+        .cs-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+        
+        @media (max-width: 992px) {
+            .cs-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .challenge, .solution {
+            background-color: var(--dark-gray);
+            padding: 40px;
+            border-radius: 10px;
+            height: 100%;
+        }
+        
+        .challenge h3, .solution h3 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .challenge h3 {
+            color: var(--accent);
+        }
+        
+        .solution h3 {
+            color: var(--secondary);
+        }
+        
+        .challenge ul, .solution ul {
+            list-style: none;
+        }
+        
+        .challenge li, .solution li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .challenge li:before {
+            content: "✗";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .solution li:before {
+            content: "✓";
+            color: var(--secondary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        /* Google Cloud Integration */
+        .google-cloud {
+            background-color: var(--dark);
+        }
+        
+        .gc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .gc-card {
+            background-color: var(--dark-gray);
+            padding: 30px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .gc-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .gc-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .gc-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Stats */
+        .stats {
+            background-color: var(--dark-gray);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .stat-item {
+            padding: 30px 20px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        /* Industries */
+        .industries {
+            background-color: var(--dark);
+        }
+        
+        .industries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .industry-card {
+            background-color: var(--dark-gray);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .industry-card:hover {
+            background-color: #444;
+        }
+        
+        .industry-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(to right, var(--primary), #3367D6);
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #111;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links h4 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <main>
-    <div class="page">
-      <header>
-        <div class="logo">
-          <div class="logo-mark" aria-hidden="true"></div>
-          <div>
-            <div class="logo-text-main">CommerceClarity</div>
-            <div class="logo-text-sub">CATALOG INTELLIGENCE PLATFORM</div>
-          </div>
-        </div>
-        <nav>
-          <a href="#how">How it works</a>
-          <a href="#features">Capabilities</a>
-          <a href="#industries">Industries</a>
-          <a href="#stories">Customer stories</a>
-          <a href="#contact">Talk to us</a>
-        </nav>
-      </header>
-
-      <!-- HERO -->
-      <section aria-labelledby="hero-title">
-        <div class="pill">
-          <div class="pill-dot"></div>
-          <span class="pill-text-strong">From messy data to revenue</span>
-          <span>Instantly. Everywhere.</span>
-        </div>
-
-        <div class="hero">
-          <div>
-            <h1 id="hero-title" class="hero-heading">
-              <span class="hero-gradient">
-                Turn supplier chaos into catalog control.
-              </span>
-            </h1>
-            <p class="hero-subtitle">
-              CommerceClarity is an AI-powered catalog operations layer that transforms how retailers and brands ingest, standardize, and scale product data across every channel — without changing how suppliers work.
-            </p>
-
-            <div class="hero-metrics">
-              <div class="hero-metric-item">
-                <span class="hero-metric-value">20,000+</span>
-                <span>products processed automatically for leading retailers.</span>
-              </div>
-              <div class="hero-metric-item">
-                <span class="hero-metric-value">8×</span>
-                <span>faster time-to-market compared with manual onboarding.</span>
-              </div>
-              <div class="hero-metric-item">
-                <span class="hero-metric-value">90%</span>
-                <span>reduction in catalog operations workload.</span>
-              </div>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>Commerce</span>Clarity
             </div>
-
-            <div class="hero-cta-row">
-              <a
-                class="btn-primary"
-                href="#contact"
-              >
-                Schedule a 30-minute conversation
-              </a>
-              <a
-                class="btn-ghost"
-                href="#stories"
-              >
-                See how retailers use CommerceClarity →
-              </a>
+            <div class="google-cloud-badge">
+                <i class="fab fa-google"></i>
+                Google Cloud Build Partner
             </div>
-            <div class="hero-caption">
-              Proven with retailers like <span>Purina</span>, <span>Arcaplanet</span>, <span>Cisalfa</span> and <span>Caddy’s</span>.
-            </div>
-          </div>
-
-          <!-- Right hero panel -->
-          <aside class="hero-panel" aria-label="Supplier data automation overview">
-            <div class="hero-panel-header">
-              <span>Supplier feeds</span>
-              <span class="badge"
-                ><span class="badge-dot"></span> AI pipelines live</span
-              >
-            </div>
-            <div class="hero-grid">
-              <div class="hero-card">
-                <h2 class="hero-card-title">Universal ingestion</h2>
-                <div class="hero-card-main">
-                  Accept data from any supplier, in any format.
-                </div>
-                <ul class="hero-list">
-                  <li>
-                    <span class="hero-list-label">
-                      <span>Excel, CSV, PDF, portals, APIs</span>
-                    </span>
-                    <span class="hero-badge-pill">No IT project</span>
-                  </li>
-                  <li>
-                    <span class="hero-list-label">One operating model</span>
-                    <span>for hundreds of suppliers</span>
-                  </li>
+            <nav>
+                <ul>
+                    <li><a href="#solution">Solution</a></li>
+                    <li><a href="#integration">Google Cloud</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#industries">Industries</a></li>
                 </ul>
-              </div>
+            </nav>
+            <a href="#contact" class="cta-button">Request Demo</a>
+        </div>
+    </header>
 
-              <div class="hero-card">
-                <h2 class="hero-card-title">AI validation</h2>
-                <div class="hero-card-main">
-                  Compliance, enrichment &amp; QA at source.
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Transform Supplier Data with <span>AI CatalogOS</span> on Google Cloud</h1>
+            <p>Automate catalog operations, reduce costs by <span class="highlight">95%</span>, and launch products <span class="highlight">8x faster</span> across 60+ channels with our Google Cloud-native solution.</p>
+            <a href="#solution" class="cta-button">See How It Works</a>
+        </div>
+    </section>
+
+    <!-- Challenge & Solution -->
+    <section id="solution" class="challenge-solution">
+        <div class="container">
+            <div class="section-title">
+                <h2>From Data Chaos to Competitive Advantage</h2>
+                <p>Managing hundreds of suppliers means managing hundreds of data formats, quality standards, and update cycles.</p>
+            </div>
+            <div class="cs-container">
+                <div class="challenge">
+                    <h3><i class="fas fa-exclamation-triangle"></i> The Challenge</h3>
+                    <ul>
+                        <li>Manual processes that don't scale</li>
+                        <li>Each supplier delivers data in different formats</li>
+                        <li>Data quality issues require extensive manual validation</li>
+                        <li>Catalog operations consume significant FTE resources</li>
+                        <li>New supplier onboarding takes months to complete</li>
+                    </ul>
                 </div>
-                <ul class="hero-list">
-                  <li>
-                    <span class="hero-list-label">Regulatory checks</span>
-                    <span>by market</span>
-                  </li>
-                  <li>
-                    <span class="hero-list-label">Attribute generation</span>
-                    <span>across categories</span>
-                  </li>
-                </ul>
-              </div>
+                <div class="solution">
+                    <h3><i class="fas fa-rocket"></i> With CommerceClarity AI CatalogOS</h3>
+                    <ul>
+                        <li>Universal ingestion normalizes any data format automatically</li>
+                        <li>AI-powered validation and enrichment at source</li>
+                        <li>Redeploy catalog teams to higher-value activities</li>
+                        <li>Onboard new suppliers in days, not months</li>
+                        <li>Built on Google Cloud for limitless scalability</li>
+                    </ul>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <div class="hero-highlight">
-              <strong>Multi-market ready from day one.</strong>
-              Localization, market-specific rules and governance are enforced automatically so your catalog is always compliant and ready to sell in every country and channel.
+    <!-- Google Cloud Integration -->
+    <section id="integration" class="google-cloud">
+        <div class="container">
+            <div class="section-title">
+                <h2>Powered by Google Cloud</h2>
+                <p>CommerceClarity AI CatalogOS leverages Google Cloud's AI/ML and data infrastructure for enterprise-scale catalog automation</p>
             </div>
-          </aside>
-        </div>
-      </section>
-
-      <!-- Features -->
-      <section id="features" aria-labelledby="features-title">
-        <div class="section-heading-row">
-          <h2 id="features-title" class="section-title">Capabilities</h2>
-          <p class="section-subtitle">
-            CommerceClarity turns catalogue operations into a competitive advantage. Replace fragmented workflows with one AI-driven operating layer for supplier data.
-          </p>
-        </div>
-
-        <div class="grid-3">
-          <article class="card">
-            <div class="card-label">01 · Universal ingestion</div>
-            <h3 class="card-title">One gateway for every supplier</h3>
-            <p class="card-text">
-              Accept product data in any format without integration projects or onboarding delays. CommerceClarity adapts to your reality and connects to your suppliers and systems.
-            </p>
-            <div class="chip-row">
-              <span class="chip">Excel, CSV, PDF</span>
-              <span class="chip">APIs &amp; portals</span>
-              <span class="chip">ERP, PIM, e-commerce</span>
+            <div class="gc-grid">
+                <div class="gc-card">
+                    <div class="gc-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h4>Vertex AI</h4>
+                    <p>AI-powered validation, enrichment, and classification of supplier data. Transforms unstructured data into AI-readable, compliant product listings.</p>
+                </div>
+                <div class="gc-card">
+                    <div class="gc-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h4>BigQuery</h4>
+                    <p>High-scale data processing for real-time catalog operations. Enables instant analytics and reporting across millions of products.</p>
+                </div>
+                <div class="gc-card">
+                    <div class="gc-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h4>Google Kubernetes Engine</h4>
+                    <p>Resilient global deployment with automatic scaling. Ensures low-latency operations across North America, Europe, and other target markets.</p>
+                </div>
+                <div class="gc-card">
+                    <div class="gc-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Cloud Security</h4>
+                    <p>Enterprise-grade security and compliance for regulated industries (pharmacy, health, grocery). SOC2, ISO27001, and GDPR compliant.</p>
+                </div>
             </div>
-          </article>
+        </div>
+    </section>
 
-          <article class="card">
-            <div class="card-label">02 · AI validation &amp; enrichment</div>
-            <h3 class="card-title">Compliance built into the feed</h3>
-            <p class="card-text">
-              Automatically validate, enrich and normalize supplier data at scale. Enforce your compliance rules, category taxonomy and quality standards before data hits your channels.
-            </p>
-            <div class="chip-row">
-              <span class="chip">Data quality checks</span>
-              <span class="chip">Attribute generation</span>
-              <span class="chip">Governance &amp; approvals</span>
+    <!-- Results -->
+    <section id="results" class="stats">
+        <div class="container">
+            <div class="section-title">
+                <h2>Proven Results</h2>
+                <p>CommerceClarity delivers measurable business impact across all verticals</p>
             </div>
-          </article>
-
-          <article class="card">
-            <div class="card-label">03 · Multi-market catalog</div>
-            <h3 class="card-title">Ready to sell in every country</h3>
-            <p class="card-text">
-              Support different regulations, languages and market requirements from a single operating model. Launch new channels and geographies without duplicating catalog work.
-            </p>
-            <div class="chip-row">
-              <span class="chip">Localization</span>
-              <span class="chip">Regulatory rules</span>
-              <span class="chip">Channel-specific feeds</span>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <p>Cost Reduction in catalog operations</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">8×</div>
+                    <p>Faster to Market with new products</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">&lt;4</div>
+                    <p>Weeks to achieve ROI</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">60+</div>
+                    <p>Channels supported for product distribution</p>
+                </div>
             </div>
-          </article>
         </div>
-      </section>
+    </section>
 
-      <!-- How it works -->
-      <section id="how" aria-labelledby="how-title">
-        <div class="section-heading-row">
-          <h2 id="how-title" class="section-title">How it works</h2>
-          <p class="section-subtitle">
-            From supplier chaos to catalog control in three steps — without changing how suppliers send data or overhauling your existing infrastructure.
-          </p>
-        </div>
-
-        <div class="flow">
-          <article class="flow-step" data-step="1">
-            <h3 class="flow-title">Ingest</h3>
-            <p class="flow-text">
-              Ingest data from any supplier, in any format. CommerceClarity normalizes files, feeds and portal exports into a unified product model aligned to your taxonomy.
-            </p>
-            <div class="pill-row">
-              <span class="pill-small">Excel &amp; CSV</span>
-              <span class="pill-small">PDF catalogs</span>
-              <span class="pill-small">APIs &amp; portals</span>
+    <!-- Industries -->
+    <section id="industries" class="industries">
+        <div class="container">
+            <div class="section-title">
+                <h2>Trusted Across Verticals</h2>
+                <p>CommerceClarity works for any business with complex catalog requirements</p>
             </div>
-          </article>
-
-          <article class="flow-step" data-step="2">
-            <h3 class="flow-title">Structure</h3>
-            <p class="flow-text">
-              Our AI structures, validates and enriches product data, applying compliance checks, attribute extraction, translations and category assignments at scale.
-            </p>
-            <div class="pill-row">
-              <span class="pill-small">Compliance rules</span>
-              <span class="pill-small">AI enrichment</span>
-              <span class="pill-small">Taxonomy mapping</span>
+            <div class="industries-grid">
+                <div class="industry-card">
+                    <div class="industry-icon"><i class="fas fa-tshirt"></i></div>
+                    <h4>Apparel & Sporting Goods</h4>
+                    <p>Variants, seasonal rotations</p>
+                </div>
+                <div class="industry-card">
+                    <div class="industry-icon"><i class="fas fa-paw"></i></div>
+                    <h4>Petfood & Petcare</h4>
+                    <p>Compliance, multi-source</p>
+                </div>
+                <div class="industry-card">
+                    <div class="industry-icon"><i class="fas fa-pills"></i></div>
+                    <h4>Pharmacy & Health</h4>
+                    <p>Ingredients, regulations</p>
+                </div>
+                <div class="industry-card">
+                    <div class="industry-icon"><i class="fas fa-gem"></i></div>
+                    <h4>Fashion & Luxury</h4>
+                    <p>Brand identity, lookbooks</p>
+                </div>
+                <div class="industry-card">
+                    <div class="industry-icon"><i class="fas fa-laptop"></i></div>
+                    <h4>Consumer Electronics</h4>
+                    <p>Large feeds, dynamic pricing</p>
+                </div>
+                <div class="industry-card">
+                    <div class="industry-icon"><i class="fas fa-home"></i></div>
+                    <h4>Home & Living</h4>
+                    <p>Configurable products</p>
+                </div>
+                <div class="industry-card">
+                    <div class="industry-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <h4>Grocery & Food Delivery</h4>
+                    <p>Local data, daily updates</p>
+                </div>
+                <div class="industry-card">
+                    <div class="industry-icon"><i class="fas fa-store"></i></div>
+                    <h4>Multi-Category Marketplaces</h4>
+                    <p>Platform-wide governance</p>
+                </div>
             </div>
-          </article>
+        </div>
+    </section>
 
-          <article class="flow-step" data-step="3">
-            <h3 class="flow-title">Publish</h3>
-            <p class="flow-text">
-              CommerceClarity delivers structured, validated products to your PIM, ERP, online store and marketplaces — keeping every channel in sync with supplier updates.
-            </p>
-            <div class="pill-row">
-              <span class="pill-small">PIM &amp; ERP</span>
-              <span class="pill-small">E-commerce</span>
-              <span class="pill-small">Marketplaces</span>
+    <!-- CTA Section -->
+    <section id="contact" class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your Catalog Operations?</h2>
+            <p>Schedule a demo to see how CommerceClarity AI CatalogOS on Google Cloud can automate your supplier data, reduce costs, and accelerate time-to-market.</p>
+            <a href="mailto:michele@commerceclarity.xyz" class="cta-button" style="background-color: white; color: var(--primary);">Contact Us</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">
+                        <span>Commerce</span>Clarity
+                    </div>
+                    <p>AI-powered catalogue optimization solutions that turn catalogue operations into a competitive advantage.</p>
+                    <p style="margin-top: 20px;">
+                        <i class="fas fa-envelope"></i> michele@commerceclarity.xyz
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4>Solution</h4>
+                    <ul>
+                        <li><a href="#solution">AI CatalogOS</a></li>
+                        <li><a href="#integration">Google Cloud Integration</a></li>
+                        <li><a href="#results">Results</a></li>
+                        <li><a href="#industries">Industries</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Customers</a></li>
+                        <li><a href="#">Partners</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                        <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
+                    </ul>
+                </div>
             </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- Industries -->
-      <section id="industries" aria-labelledby="industries-title">
-        <div class="section-heading-row">
-          <h2 id="industries-title" class="section-title">Proven across verticals</h2>
-          <p class="section-subtitle">
-            CommerceClarity works for retailers and brands with complex catalog requirements, where supplier data limits growth and teams are stuck in spreadsheets.
-          </p>
-        </div>
-
-        <div class="industries-grid">
-          <div class="industry-tag">
-            <span>Apparel &amp; Sporting Goods</span>
-            <span>Seasonal rotations, variants, multi-store</span>
-          </div>
-          <div class="industry-tag">
-            <span>Petfood &amp; Petcare</span>
-            <span>Compliance, multi-source, B2B + D2C</span>
-          </div>
-          <div class="industry-tag">
-            <span>Pharmacy &amp; Health</span>
-            <span>Ingredients, regulations, supplier feeds</span>
-          </div>
-          <div class="industry-tag">
-            <span>Fashion &amp; Luxury</span>
-            <span>Complex attributes, brand identity</span>
-          </div>
-          <div class="industry-tag">
-            <span>Consumer Electronics</span>
-            <span>Large feeds, dynamic pricing, omnichannel</span>
-          </div>
-          <div class="industry-tag">
-            <span>Home &amp; Living</span>
-            <span>Configurable products, complex metadata</span>
-          </div>
-          <div class="industry-tag">
-            <span>Grocery &amp; FMCG</span>
-            <span>Large catalogs, daily updates, multi-country</span>
-          </div>
-          <div class="industry-tag">
-            <span>Retail Groups</span>
-            <span>Multi-brand, governance, channel fragmentation</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Customer stories -->
-      <section id="stories" aria-labelledby="stories-title">
-        <div class="section-heading-row">
-          <h2 id="stories-title" class="section-title">Customer stories</h2>
-          <p class="section-subtitle">
-            See how retailers and brands are transforming their catalog operations with CommerceClarity.
-          </p>
-        </div>
-
-        <div class="testimonials">
-          <figure class="quote">
-            CommerceClarity transformed how we onboard suppliers. We went from weeks of manual work to processing 20,000+ products automatically — 8× faster to market.
-            <strong>Head of Digital, Leading Pet Retailer</strong>
-            <span>Grocery &amp; Petcare</span>
-          </figure>
-
-          <figure class="quote">
-            At Purina, we strive to stay at the forefront of retail innovation. CommerceClarity helped us bring AI into our catalog and standardize supplier feeds globally.
-            <strong>Digital Innovation Lead, Purina</strong>
-            <span>CPG &amp; Petcare</span>
-          </figure>
-
-          <figure class="quote">
-            At Caddy's, being tech-native is in our DNA. With CommerceClarity, we automated data provider integrations and attribute management, making our catalog smarter and faster to scale.
-            <strong>E-Commerce Director, Caddy’s</strong>
-            <span>Health &amp; Beauty Retail</span>
-          </figure>
-        </div>
-      </section>
-
-      <!-- CTA -->
-      <section id="contact" aria-labelledby="contact-title">
-        <div class="cta">
-          <div>
-            <h2 id="contact-title" class="cta-title">
-              See how leading retailers automate supplier data management.
-            </h2>
-            <p class="cta-text">
-              Schedule a 30-minute conversation with our team. We’ll discuss your supplier data challenges and show you how retailers like Arcaplanet and Cisalfa achieve up to 90% cost reduction in catalog operations.
-            </p>
-          </div>
-          <div>
-            <a class="btn-primary" href="mailto:michele@commerceclarity.xyz">
-              Talk to our team
-            </a>
-            <div style="font-size:0.76rem;color:var(--muted);margin-top:6px;">
-              Or email us directly at
-              <a href="mailto:michele@commerceclarity.xyz">michele@commerceclarity.xyz</a>.
+            <div class="copyright">
+                <p>&copy; 2023 CommerceClarity. All rights reserved. | Google Cloud is a trademark of Google LLC.</p>
+                <p style="margin-top: 10px;">CommerceClarity AI CatalogOS is a Google Cloud Build Partner Solution</p>
             </div>
-          </div>
         </div>
-      </section>
+    </footer>
 
-      <footer>
-        <span>© <span id="year"></span> CommerceClarity. All rights reserved.</span>
-        <span>Made for retailers and brands with complex catalogs.</span>
-      </footer>
-    </div>
-  </main>
-
-  <script>
-    // Set current year in footer
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a, .cta-button[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Simple animation for stat numbers
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const observerOptions = {
+            threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        statNumbers.forEach(stat => {
+            stat.style.opacity = '0';
+            stat.style.transform = 'translateY(20px)';
+            stat.style.transition = 'opacity 0.5s, transform 0.5s';
+            observer.observe(stat);
+        });
+    </script>
 </body>
 </html>
